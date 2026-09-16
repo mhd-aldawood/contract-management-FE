@@ -42,4 +42,8 @@ export default class AuthRepositoryImpl extends AuthRepository {
     if (!session) return null;
     return new User(session);
   }
+  async logout(){
+    this.local.clearSession()
+    this.local.clearTokens()
+  }
 }

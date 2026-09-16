@@ -11,4 +11,7 @@ export default class AuthRepository {
   async login({ username, password }) {
     throw new Error('Not implemented')
   }
+   async logout() {
+    throw new Error('Not implemented')
+  }
 }
