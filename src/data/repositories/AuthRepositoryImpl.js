@@ -19,14 +19,22 @@ export default class AuthRepositoryImpl extends AuthRepository {
     // Persist tokens locally if your backend returns them
     if (data.token) this.local.saveToken(data.token);
     if (data.refresh) this.local.saveRefreshToken(data.refresh);
-    return new User(data.user ?? { username, email });
+    const user = new User(data.user ?? { username, email });
+    this.local.saveSession(user);
+
+    return user;
   }
 
   async login({ username, password }) {
     const data = await this.remote.login({ username, password });
     if (data.token) this.local.saveToken(data.token);
     if (data.refresh) this.local.saveRefreshToken(data.refresh);
-    return new User(data.user ?? { username });
+    const user = new User(data.user ?? { username });
+
+    // ✅ استخدم saveSession الموجود
+    this.local.saveSession(user);
+
+    return user;
   }
 
   getCurrentUser() {
