@@ -35,13 +35,32 @@ const routes = [
     path: '/home/about',
     name: 'about',
     component: () => import('@/presentation/views/AboutView.vue'),
-    meta: { requiresAuth: true }
   },
   {
      path: '/home/planning', 
      name: 'agreements', 
      component: () => import('@/presentation/views/AgreementsView.vue'),  
     },
+     {
+    path: '/home/contracts/educational-content',
+    name: 'اتفاقية-محتوى-تعليمي',
+    component:  () => import('@/presentation/views/contracts/EducationalContentAgreementView.vue'),
+  },
+  {
+    path: '/home/contracts/nafath-center',
+    name: 'اتفاقية-مركز-نفاذ',
+    component:  () => import('@/presentation/views/contracts/NafathCenterAgreementView.vue'),
+  },
+  {
+    path: '/home/contracts/other',
+    name: 'اتفاقية-أخرى',
+    component: () => import('@/presentation/views/contracts/OtherAgreementView.vue'),
+  },
+  {
+    path: '/home/contracts/lifelong-learning',
+    name: 'اتفاقية-مركز-التعلم-مدى-الحياة',
+    component: () => import('@/presentation/views/contracts/LifelongLearningAgreementView.vue'),
+  },
 ]
 
 const router = createRouter({
