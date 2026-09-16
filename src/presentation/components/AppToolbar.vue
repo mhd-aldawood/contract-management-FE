@@ -18,7 +18,7 @@
 
 <script setup>
 import { useRouter, useRoute } from 'vue-router'
-import { authRepositoryInstance } from '@/di/container'
+import container from '@/di/container'
 
 const router = useRouter()
 const route = useRoute()
@@ -39,7 +39,7 @@ function goHome() {
 }
 
 async function handleLogout() {
-  await authRepositoryInstance.logout()
+  await container.authRepository.logout()
   router.push('/login')
 }
 </script>

@@ -1,9 +1,6 @@
 <script setup>
 import { ref, onMounted, onUnmounted, computed } from 'vue';
-import {
-  getCostDetailsUseCase,
-  exportAgreementsUseCase,
-} from '@/di/container';
+import container  from '@/di/container';
 import useAgreements from '@/presentation/composables/useAgreements';
 import AgreementFilters from '@/presentation/components/AgreementFilters.vue';
 import AgreementTable from '@/presentation/components/AgreementTable.vue';
@@ -31,7 +28,7 @@ const openCostModal = async (agreementNumber) => {
     filteredAgreements.value.find((a) => a.number === agreementNumber) || null;
   if (!selectedAgreement.value) return;
 
-  costDetails.value = await getCostDetailsUseCase.execute();
+  costDetails.value = await container.getCostDetailsUseCase.execute();
   modalVisible.value = true;
   document.body.style.overflow = 'hidden';
 };
@@ -80,10 +77,10 @@ const exportToExcel = async () => {
   }
 
   if (costDetails.value.length === 0) {
-    costDetails.value = await getCostDetailsUseCase.execute();
+    costDetails.value = await container.getCostDetailsUseCase.execute();
   }
 
-  const sheets = exportAgreementsUseCase.execute(
+  const sheets = container.exportAgreementsUseCase.execute(
     filteredAgreements.value,
     costDetails.value,
     { statusArabic: STATUS_LABEL, typeArabic: TYPE_LABEL },

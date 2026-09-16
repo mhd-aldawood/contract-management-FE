@@ -10,8 +10,8 @@
 
 <script setup>
 import { computed } from 'vue'
-import { authRepositoryInstance } from '@/di/container'
-const user = computed(() => authRepositoryInstance.getCurrentUser())
+import container from '@/di/container'
+const user = computed(() => container.authRepository.getCurrentUser())
 </script>
 
 <style scoped>

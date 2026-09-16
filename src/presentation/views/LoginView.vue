@@ -21,7 +21,7 @@
 <script setup>
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
-import { loginUseCase } from '@/di/container'
+import container from '@/di/container'
 
 const router = useRouter()
 const username = ref('')
@@ -34,7 +34,7 @@ async function handleLogin() {
   loading.value = true
   try {
     console.log("loginview ${username.value} ${password.value}")
-    await loginUseCase.execute({username:username.value,password: password.value})
+    await container.loginUseCase.execute({username:username.value,password: password.value})
     router.push('/home')
   } catch (e) {
     error.value = e.message

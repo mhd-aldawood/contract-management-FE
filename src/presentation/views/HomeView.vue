@@ -31,9 +31,9 @@
 <script setup>
 import { computed } from 'vue'
 import AppToolbar from '@/presentation/components/AppToolbar.vue'
-import { authRepositoryInstance } from '@/di/container'
+import container from '@/di/container'
 
-const user = computed(() => authRepositoryInstance.getCurrentUser())
+const user = computed(() => container.authRepository.getCurrentUser())
 </script>
 
 <style scoped>

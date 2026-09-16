@@ -1,5 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import { authRepositoryInstance } from '@/di/container'
+import container from '@/di/container'
 
 const routes = [
   { path: '/', redirect: '/signup' },
@@ -50,7 +50,7 @@ const router = createRouter({
 })
 
 router.beforeEach((to, from, next) => {
-  const user = authRepositoryInstance.getCurrentUser()
+  const user = container.authRepository.getCurrentUser()
   if (to.meta.requiresAuth && !user) {
     next({ name: 'login' })
   } else {

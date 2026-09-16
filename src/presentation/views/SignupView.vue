@@ -83,7 +83,7 @@
 <script setup>
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
-import { signupUseCase } from '@/di/container'
+import  container  from '@/di/container'
 
 const router = useRouter()
 const username = ref('')
@@ -105,7 +105,7 @@ async function handleSignup() {
 
   loading.value = true
   try {
-    await signupUseCase.execute({
+    await container.signupUseCase.execute({
       username: username.value,
       email: email.value,
       password: password.value,

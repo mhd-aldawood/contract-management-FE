@@ -1,5 +1,5 @@
 import { ref, computed } from 'vue';
-import { getAgreementsUseCase, filterAgreementsUseCase } from '@/di/container';
+import container from '@/di/container';
 
 const STATUS_LABEL = { finish: 'منتهية', current: 'حالية', future: 'مستقبلية' };
 const TYPE_LABEL   = { current: 'جاري',   investment: 'استثماري' };
@@ -12,14 +12,14 @@ export default function useAgreements() {
   const loadAgreements = async () => {
     loading.value = true;
     try {
-      agreements.value = await getAgreementsUseCase.execute();
+      agreements.value = await container.getAgreementsUseCase.execute();
     } finally {
       loading.value = false;
     }
   };
 
   const filteredAgreements = computed(() =>
-    filterAgreementsUseCase.execute(agreements.value, activeFilters.value)
+    container.filterAgreementsUseCase.execute(agreements.value, activeFilters.value)
   );
 
   const toggleFilter = (category, value) => {
