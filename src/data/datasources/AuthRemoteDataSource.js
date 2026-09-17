@@ -1,13 +1,14 @@
 // src/data/datasources/AuthRemoteDataSource.js
 const BASE_URL = import.meta.env.VITE_API_URL || "http://127.0.0.1:8000";
 import { createLogger } from "@/core/logger";
+import { API_URLS } from '@/core/config'
 
 const log = createLogger("AuthRemoteDataSource");
 export default class AuthRemoteDataSource {
   async signup({ username, email, password, password2 }) {
     // console.log("request ${username} ${email} ${password} ${password2}");
     log.debug("request ${username} ${email} ${password} ${password2}");
-    const res = await fetch(`${BASE_URL}/api/auth/signup/`, {
+    const res = await fetch(API_URLS.auth.signup, {//${BASE_URL}/api/auth/signup/
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ username, email, password, password2 }),
@@ -31,7 +32,7 @@ export default class AuthRemoteDataSource {
     // console.log("request ${username} ${password} ");
     log.debug("request ${username} ${password} ");
 
-    const res = await fetch(`${BASE_URL}/api/auth/login/`, {
+    const res = await fetch(API_URLS.auth.login, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ username, password }),

@@ -1,74 +1,75 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import container from '@/di/container'
+import { ROUTE_PATHS, ROUTE_NAMES } from '@/core/config'
 
 const routes = [
   { path: '/', redirect: '/signup' },
   {
-    path: '/signup',
-    name: 'signup',
+    path: ROUTE_PATHS.signup,
+    name: ROUTE_NAMES.signup,
     component: () => import('@/presentation/views/SignupView.vue')
   },
   {
-    path: '/login',
-    name: 'login',
+    path:ROUTE_PATHS.login ,
+    name: ROUTE_NAMES.login,
     component: () => import('@/presentation/views/LoginView.vue')
   },
   {
-    path: '/home',
-    name: 'home',
+    path:ROUTE_PATHS.home,
+    name: ROUTE_NAMES.home,
     component: () => import('@/presentation/views/HomeView.vue'),
     meta: { requiresAuth: true }
   },
   {
-    path: '/home/profile',
-    name: 'profile',
+    path:ROUTE_PATHS.profile,
+    name:ROUTE_NAMES.profile,
     component: () => import('@/presentation/views/ProfileView.vue'),
     meta: { requiresAuth: true }
   },
   {
-    path: '/home/settings',
-    name: 'settings',
+    path:ROUTE_PATHS.settings ,
+    name:ROUTE_NAMES.settings,
     component: () => import('@/presentation/views/SettingsView.vue'),
     meta: { requiresAuth: true }
   },
   {
-    path: '/home/about',
-    name: 'about',
+    path:ROUTE_PATHS.about,
+    name:ROUTE_NAMES.about,
     component: () => import('@/presentation/views/AboutView.vue'),
     meta: { requiresAuth: true }
   },
   {
-     path: '/home/planning', 
-     name: 'agreements', 
+     path:ROUTE_PATHS.planning, 
+     name:ROUTE_NAMES.planning,
      component: () => import('@/presentation/views/AgreementsView.vue'),  
     },
     {
-  path: '/home/contracts/nafath-centers',
-  name: 'nafath-centers',
+  path:ROUTE_PATHS.contracts.nafathCenters,
+  name:ROUTE_NAMES.contracts.nafathCenters,
   component: () => import('@/presentation/views/contracts/NafathCentersView.vue'),
   meta: { requiresAuth: true },
 },
 {
-  path: '/home/contracts/memorandum',
-  name: 'memorandum',
+  path:ROUTE_PATHS.contracts.memorandum,
+  name:ROUTE_NAMES.contracts.memorandum,
   component: () => import('@/presentation/views/contracts/MemorandumView.vue'),
   meta: { requiresAuth: true },
 },
 {
-  path: '/home/contracts/lifelong-learning',
-  name: 'lifelong-learning',
+  path:ROUTE_PATHS.contracts.lifelongLearning,
+  name: ROUTE_NAMES.contracts.memorandum,
   component: () => import('@/presentation/views/contracts/LifelongLearningView.vue'),
   meta: { requiresAuth: true },
 },
 {
-  path: '/home/contracts/other',
-  name: 'other-agreements',
+  path:ROUTE_PATHS.contracts.otherAgreements,// '/home/contracts/other',
+  name:ROUTE_NAMES.contracts.otherAgreements, //'other-agreements',
   component: () => import('@/presentation/views/contracts/OtherAgreementsView.vue'),
   meta: { requiresAuth: true },
 },
 {
-  path: '/home/contracts/educational-content',
-  name: 'educational-contentView',
+  path:ROUTE_PATHS.contracts.educationalContent,// '/home/contracts/educational-content',
+  name:ROUTE_NAMES.contracts.educationalContent,// 'educational-contentView',
   component: () => import('@/presentation/views/contracts/EducationalContentView.vue'),
   meta: { requiresAuth: true },
 },
