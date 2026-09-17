@@ -11,10 +11,17 @@ import { GetCostDetailsUseCase } from '@/domain/usecases/agreements/GetCostDetai
 import { FilterAgreementsUseCase } from '@/domain/usecases/agreements/FilterAgreementsUseCase';
 import { ExportAgreementsUseCase } from '@/domain/usecases/agreements/ExportAgreementsUseCase';
 
+import EducationalContentDataSource from '@/data/datasources/EducationalContentDataSource';
+import EducationalContentRepositoryImpl from '@/data/repositories/EducationalContentRepositoryImpl';
+import GetEducationalContentUseCase from '@/domain/usecases/educationalcontents/GetEducationalContentUseCase';
+import SaveEducationalContentUseCase from '@/domain/usecases/educationalcontents/GetEducationalContentUseCase';
+
+
 // ---------- Data Sources ----------
 const authLocalDataSource = new AuthLocalDataSource();
 const authRemoteDataSource = new AuthRemoteDataSource();
 const agreementLocalDataSource = new AgreementLocalDataSource();
+const educationalContentDataSource=new EducationalContentDataSource()
 
 // ---------- Repositories ----------
 const authRepository = new AuthRepositoryImpl({
@@ -22,6 +29,9 @@ const authRepository = new AuthRepositoryImpl({
   remoteDataSource: authRemoteDataSource,
 });
 const agreementRepository = new AgreementRepositoryImpl(agreementLocalDataSource);
+
+const educationalContentRepository =new EducationalContentRepositoryImpl({localDataSource:educationalContentDataSource})
+
 
 // ---------- Container ----------
 const container = {
@@ -36,6 +46,10 @@ const container = {
   getCostDetailsUseCase: new GetCostDetailsUseCase(agreementRepository),
   filterAgreementsUseCase: new FilterAgreementsUseCase(),
   exportAgreementsUseCase: new ExportAgreementsUseCase(),
+
+  //Educatinoal Content
+  getEducationalContentUseCase:new GetEducationalContentUseCase({educationalContentRepository}),
+  saveEducationalContentUseCase:new SaveEducationalContentUseCase({educationalContentRepository})
 };
 
 export default container;

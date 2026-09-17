@@ -66,6 +66,12 @@ const routes = [
   component: () => import('@/presentation/views/contracts/OtherAgreementsView.vue'),
   meta: { requiresAuth: true },
 },
+{
+  path: '/home/contracts/educational-content',
+  name: 'educational-contentView',
+  component: () => import('@/presentation/views/contracts/EducationalContentView.vue'),
+  meta: { requiresAuth: true },
+},
 ]
 
 const router = createRouter({

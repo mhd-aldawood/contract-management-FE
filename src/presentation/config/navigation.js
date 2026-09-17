@@ -53,6 +53,12 @@ export const NAV_ITEMS = [
         icon: '📄',
         path: '/home/contracts/other',
       },
+       {
+        name: 'educational-content',
+        label: 'محتوى تعليمي',
+        icon: '📄',
+        path: '/home/contracts/educational-content',
+      },
     ],
   },
 ]
