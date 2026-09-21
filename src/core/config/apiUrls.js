@@ -23,7 +23,7 @@ export const API_URLS = {
 
   educationalContents: {
     list:     `${API_BASE_URL}/educational-contents`,
-    create:   `${API_BASE_URL}/educational-contents`,
+    create:   `${API_BASE_URL}/api/educational-contents`,
     byId:     (id) => `${API_BASE_URL}/educational-contents/${id}`,
     save:     `${API_BASE_URL}/educational-contents/save`,
   },

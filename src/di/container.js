@@ -14,7 +14,7 @@ import { ExportAgreementsUseCase } from '@/domain/usecases/agreements/ExportAgre
 import EducationalContentDataSource from '@/data/datasources/EducationalContentDataSource';
 import EducationalContentRepositoryImpl from '@/data/repositories/EducationalContentRepositoryImpl';
 import GetEducationalContentUseCase from '@/domain/usecases/educationalcontents/GetEducationalContentUseCase';
-import SaveEducationalContentUseCase from '@/domain/usecases/educationalcontents/GetEducationalContentUseCase';
+import SaveEducationalContentUseCase from '@/domain/usecases/educationalcontents/SaveEducationalContentUseCase';
 
 
 // ---------- Data Sources ----------

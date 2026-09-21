@@ -18,7 +18,10 @@
 
         <FormRow label="موضوع الاتفاقية">
           <input v-model="form.subject" type="text" placeholder="أدخل موضوع الاتفاقية" />
-          <ContractActions @print="handlePrint" class="contract-actions" @upload="handleUpload" />
+          <div class="actions-row">
+            <ContractActions class="contract-actions" @print="handlePrint" @upload="handleUpload" />
+            <FileChip :file-name="form.fileName" :file-url="form.fileUrl" @remove="handleClearFile" />
+          </div>
         </FormRow>
 
         <FormRow label="المقررات الإضافية المكلف بها">
@@ -70,13 +73,13 @@
           {{ saving ? 'جارٍ الحفظ...' : 'حفظ الاتفاقية' }}
         </button>
         <label class="checkbox-container">
-          <input type="checkbox" id="hide-content-chk" v-model="isHidden" @change="toggleContentVisibility" />
+          <input type="checkbox" id="hide-content-chk" :checked="form.isHidden" @change="toggleContentVisibility" />
           <span>إخفاء المحتوى</span>
         </label>
-    </div>
+      </div>
 
-    <p v-if="error" class="error">{{ error }}</p>
-  </div>
+      <p v-if="error" class="error">{{ error }}</p>
+    </div>
   </div>
 </template>
 
@@ -85,38 +88,38 @@ import FormRow from '@/presentation/components/educationalcontent/FormRow.vue'
 import PaymentSection from '@/presentation/components/educationalcontent/PaymentSection.vue'
 import ContractActions from '@/presentation/components/educationalcontent/ContractActions.vue'
 import { useEducationalContentForm } from '@/presentation/composables/useEducationalContentForm'
-
+import FileChip from '@/presentation/components/educationalcontent/FileChip.vue'
 const {
   form,
   saving,
   error,
   save,
   reset,
-   isHidden,                  // ✅ from composable
   toggleContentVisibility,   // ✅ from composable
   addPaymentRow,
   removePaymentRow,
+  handleFormUpload,
+  clearFile
 } = useEducationalContentForm('educational-content')
 
 async function handleSave() {
   try {
-    await save()
+    const saved = await save()
     alert('تم الحفظ بنجاح ✅')
+    console.log('Saved record:', saved)
   } catch (e) {
-    console.error(e)
+    alert(`فشل الحفظ ❌\n${e.message}`)
   }
 }
 
 function handlePrint() {
   window.print()
 }
-
-function handleUpload(file) {
-  const reader = new FileReader()
-  reader.onload = (e) => {
-    form.contractText = e.target.result
-  }
-  reader.readAsText(file)
+function handleClearFile() {
+  clearFile()
+}
+function handleUpload(payload) {
+  handleFormUpload(payload)
 }
 
 </script>
@@ -248,5 +251,38 @@ textarea {
   border-color: #667eea;
   background: #edf2ff;
   color: #4c51bf;
+}
+
+.file-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.35rem 0.75rem;
+  margin-top: 0.5rem;
+  background: #f1f5f9;
+  border: 1px solid #cbd5e1;
+  border-radius: 999px;
+  font-size: 0.875rem;
+  max-width: 100%;
+}
+
+.file-name {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.file-link {
+  color: #2563eb;
+  text-decoration: none;
+}
+
+.file-remove {
+  border: none;
+  background: transparent;
+  color: #ef4444;
+  cursor: pointer;
+  font-weight: bold;
 }
 </style>

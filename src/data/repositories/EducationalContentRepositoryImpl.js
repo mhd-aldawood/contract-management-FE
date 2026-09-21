@@ -3,9 +3,9 @@ import EducationalContentRepository from '@/domain/repositories/EducationalConte
 import EducationalContent from '@/domain/entities/EducationalContent'
 import { createLogger } from '@/core/logger'
 
-const log = createLogger('EducationalContentImpl')
+const log = createLogger('EducationalContentRepositoryImpl')
 
-export default class EducationalContentImpl extends EducationalContentRepository {
+export default class EducationalContentRepositoryImpl extends EducationalContentRepository {
   constructor({ localDataSource }) {
     super()
     this.local = localDataSource
@@ -17,14 +17,16 @@ export default class EducationalContentImpl extends EducationalContentRepository
   }
 
   async getByType(type) {
+    log.debug("EducationalContentImpl getByType")
     const list = await this.local.getByType(type)
     return list.map((raw) => EducationalContent.fromJSON(raw))
   }
 
-  async save(agreement) {
-    log.debug('save', agreement)
-    const saved = await this.local.save(agreement)
-    return EducationalContent.fromJSON(saved)
+  async save(payload) {
+    log.debug("EducationalContentImpl save")
+
+    const raw = await this.local.save(payload)
+    return EducationalContent.fromJSON(raw)
   }
 
   async remove(id) {
