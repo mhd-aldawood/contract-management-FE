@@ -3,61 +3,77 @@
     <div class="pdf-content">
       <h2 class="title">تفاصيل اتفاقية محتوى تعليمي</h2>
 
+      <!-- optional global summary -->
+      <p v-if="error" class="error" role="alert">{{ error }}</p>
+
       <table>
-        <FormRow label="رقم الاتفاقية">
-          <input v-model="form.agreementNumber" type="text" placeholder="أدخل رقم الاتفاقية" />
+        <FormRow label="رقم الاتفاقية" required :error="visibleErrors.agreementNumber">
+          <input v-model="form.agreementNumber" type="text" placeholder="أدخل رقم الاتفاقية"
+            :class="{ 'is-invalid': !!visibleErrors.agreementNumber }" @blur="touch('agreementNumber')" />
         </FormRow>
 
-        <FormRow label="اسم الاتفاقية">
-          <input v-model="form.name" type="text" placeholder="أدخل اسم الاتفاقية" />
+        <FormRow label="اسم الاتفاقية" required :error="visibleErrors.name">
+          <input v-model="form.name" type="text" placeholder="أدخل اسم الاتفاقية"
+            :class="{ 'is-invalid': !!visibleErrors.name }" @blur="touch('name')" />
         </FormRow>
 
-        <FormRow label="اسم الشركة المتعاقد معها">
-          <input v-model="form.companyName" type="text" placeholder="أدخل اسم الشركة" />
+        <FormRow label="اسم الشركة المتعاقد معها" required :error="visibleErrors.companyName">
+          <input v-model="form.companyName" type="text" placeholder="أدخل اسم الشركة"
+            :class="{ 'is-invalid': !!visibleErrors.companyName }" @blur="touch('companyName')" />
         </FormRow>
 
-        <FormRow label="موضوع الاتفاقية">
-          <input v-model="form.subject" type="text" placeholder="أدخل موضوع الاتفاقية" />
+        <FormRow label="موضوع الاتفاقية" required :error="visibleErrors.subject">
+          <input v-model="form.subject" type="text" placeholder="أدخل موضوع الاتفاقية"
+            :class="{ 'is-invalid': !!visibleErrors.subject }" @blur="touch('subject')" />
           <div class="actions-row">
             <ContractActions class="contract-actions" @print="handlePrint" @upload="handleUpload" />
             <FileChip :file-name="form.fileName" :file-url="form.fileUrl" @remove="handleClearFile" />
           </div>
         </FormRow>
 
-        <FormRow label="المقررات الإضافية المكلف بها">
-          <input v-model="form.additionalCourses" type="text" placeholder="أدخل المقررات الإضافية" />
+        <FormRow label="المقررات الإضافية المكلف بها" :error="visibleErrors.additionalCourses">
+          <input v-model="form.additionalCourses" type="text" placeholder="أدخل المقررات الإضافية"
+            :class="{ 'is-invalid': !!visibleErrors.additionalCourses }" @blur="touch('additionalCourses')" />
         </FormRow>
 
-        <FormRow label="الكلفة التقديرية">
-          <input v-model.number="form.estimatedCost" type="number" placeholder="0.00" />
+        <FormRow label="الكلفة التقديرية" required :error="visibleErrors.estimatedCost">
+          <input v-model.number="form.estimatedCost" type="number" min="0" step="0.01" placeholder="0.00"
+            :class="{ 'is-invalid': !!visibleErrors.estimatedCost }" @blur="touch('estimatedCost')" />
         </FormRow>
 
-        <FormRow label="بداية الاتفاقية">
-          <input v-model="form.startDate" type="date" />
+        <FormRow label="بداية الاتفاقية" required :error="visibleErrors.startDate">
+          <input v-model="form.startDate" type="date" :class="{ 'is-invalid': !!visibleErrors.startDate }"
+            @blur="touch('startDate')" />
         </FormRow>
 
-        <FormRow label="نهاية الاتفاقية">
-          <input v-model="form.endDate" type="date" />
+        <FormRow label="نهاية الاتفاقية" required :error="visibleErrors.endDate">
+          <input v-model="form.endDate" type="date" :class="{ 'is-invalid': !!visibleErrors.endDate }"
+            @blur="touch('endDate')" />
         </FormRow>
 
-        <FormRow label="طريقة الدفع">
-          <PaymentSection :form="form" :add-payment-row="addPaymentRow" :remove-payment-row="removePaymentRow" />
+        <FormRow label="طريقة الدفع" required :error="visibleErrors.paymentMethod">
+          <PaymentSection :form="form" :errors="visibleErrors" :row-errors="paymentErrors"
+            :add-payment-row="addPaymentRow" :remove-payment-row="removePaymentRow" @touch="touch" />
         </FormRow>
 
-        <FormRow label="المبلغ المستحق الفصلي">
-          <input v-model.number="form.quarterlyDue" type="number" placeholder="0.00" />
+        <FormRow label="المبلغ المستحق الفصلي" required :error="visibleErrors.quarterlyDue">
+          <input v-model.number="form.quarterlyDue" type="number" min="0" step="0.01" placeholder="0.00"
+            :class="{ 'is-invalid': !!visibleErrors.quarterlyDue }" @blur="touch('quarterlyDue')" />
         </FormRow>
 
-        <FormRow label="حالة الاتفاقية">
-          <input v-model="form.status" type="text" placeholder="مثال: نشط، قيد الانتظار" />
+        <FormRow label="حالة الاتفاقية" required :error="visibleErrors.status">
+          <input v-model.trim="form.status" type="text" placeholder="مثال: نشط، قيد الانتظار"
+            :class="{ 'is-invalid': !!visibleErrors.status }" @blur="touch('status')" />
         </FormRow>
 
-        <FormRow label="الصرف">
-          <input v-model="form.disbursement" type="text" placeholder="تفاصيل الصرف" />
+        <FormRow label="الصرف" :error="visibleErrors.disbursement">
+          <input v-model.trim="form.disbursement" type="text" placeholder="تفاصيل الصرف"
+            :class="{ 'is-invalid': !!visibleErrors.disbursement }" @blur="touch('disbursement')" />
         </FormRow>
 
-        <FormRow label="نوع الموازنة">
-          <select v-model="form.budgetType" class="table-input">
+        <FormRow label="نوع الموازنة" required :error="visibleErrors.budgetType">
+          <select v-model="form.budgetType" class="table-input" :class="{ 'is-invalid': !!visibleErrors.budgetType }"
+            @blur="touch('budgetType')">
             <option value="current">جاري</option>
             <option value="investment">استثماري</option>
           </select>
@@ -65,11 +81,12 @@
       </table>
 
       <div class="contract-text-area">
-        <textarea v-model="form.contractText" rows="10" placeholder="نص العقد..."></textarea>
+        <textarea v-model="form.contractText" rows="10" placeholder="نص العقد..."
+          :class="{ 'is-invalid': !!visibleErrors.contractText }" @blur="touch('contractText')"></textarea>
       </div>
 
       <div class="actions">
-        <button :disabled="saving" @click="handleSave">
+        <button :disabled="saving || !isFormValid" @click="handleSave">
           {{ saving ? 'جارٍ الحفظ...' : 'حفظ الاتفاقية' }}
         </button>
         <label class="checkbox-container">
@@ -99,7 +116,11 @@ const {
   addPaymentRow,
   removePaymentRow,
   handleFormUpload,
-  clearFile
+  clearFile,
+  visibleErrors,
+  paymentErrors,
+  isFormValid,
+  touch,
 } = useEducationalContentForm('educational-content')
 
 async function handleSave() {
@@ -108,6 +129,7 @@ async function handleSave() {
     alert('تم الحفظ بنجاح ✅')
     console.log('Saved record:', saved)
   } catch (e) {
+    if (e.name === 'ValidationError') return   // inline messages already shown
     alert(`فشل الحفظ ❌\n${e.message}`)
   }
 }
@@ -284,5 +306,17 @@ textarea {
   color: #ef4444;
   cursor: pointer;
   font-weight: bold;
+}
+
+input.is-invalid:focus,
+select.is-invalid:focus,
+textarea.is-invalid:focus {
+  box-shadow: 0 0 0 3px rgba(229, 62, 62, 0.18);
+  border-color: #e53e3e;
+}
+
+.actions button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
 }
 </style>

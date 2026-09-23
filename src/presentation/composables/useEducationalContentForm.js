@@ -1,33 +1,64 @@
 // src/presentation/composables/useEducationalContentForm.js
-import { ref, reactive } from 'vue'
+import { ref, reactive, computed } from 'vue'
 import EducationalContent from '@/domain/entities/EducationalContent'
 import container from '@/di/container'
-import { createLogger } from '@/core/logger';
-const log = createLogger('useEducationalContentForm');
+import { createLogger } from '@/core/logger'
+import { useFormValidation } from '@/presentation/composables/useFormValidation'
+import {
+  educationalContentSchema,
+  validatePaymentSchedule,
+} from '@/presentation/validation/educationalContentSchema'
+
+const log = createLogger('useEducationalContentForm')
+
 export function useEducationalContentForm(type = 'educational-content') {
   const form = reactive(EducationalContent.empty(type))
   const saving = ref(false)
   const error = ref('')
 
+  /* ---------- validation ---------- */
+  const {
+    visibleErrors,
+    isValid,
+    firstError,
+    touch,
+    touchAll,
+    reset: resetValidation,
+  } = useFormValidation(form, educationalContentSchema)
+
+  /** Per-row errors for the payment schedule table */
+  const paymentErrors = computed(() =>
+    validatePaymentSchedule(form.paymentSchedule || [])
+  )
+
+  const hasPaymentErrors = computed(() =>
+    paymentErrors.value.some((row) => Object.keys(row).length > 0)
+  )
+
+  const isFormValid = computed(() => isValid.value && !hasPaymentErrors.value)
+
+  /* ---------- mutation helpers ---------- */
   function reset() {
     Object.assign(form, EducationalContent.empty(type))
     error.value = ''
+    resetValidation()
   }
 
-  function toggleContentVisibility() {  // ✅ added
-    form.isHidden =!form.isHidden
+  function toggleContentVisibility() {
+    form.isHidden = !form.isHidden
   }
 
   function addPaymentRow() {
     form.paymentSchedule.push({ label: '', amount: 0, dueDate: '' })
+    touch('paymentSchedule')
   }
 
   function removePaymentRow(index) {
     form.paymentSchedule.splice(index, 1)
+    touch('paymentSchedule')
   }
 
-   function handleFormUpload(payload) {
-    // payload can be a File directly, or an event/array from some UI libs
+  function handleFormUpload(payload) {
     const picked =
       payload instanceof File          ? payload :
       payload?.target?.files?.[0]      ? payload.target.files[0] :
@@ -40,24 +71,34 @@ export function useEducationalContentForm(type = 'educational-content') {
       return
     }
 
-     form.fileName = picked.name     // ✅ now the entity carries the name
-     form.fileUrl = picked.fileUrl
-     form.file=picked
-     log.debug('handleUpload: file set', picked.name, picked.size, picked.type)
-  }
-  function clearFile(){
-    form.fileName=''
+    form.fileName = picked.name
+    form.fileUrl = picked.fileUrl
+    form.file = picked
+    log.debug('handleUpload: file set', picked.name, picked.size, picked.type)
   }
 
+  function clearFile() {
+    form.fileName = ''
+  }
 
+  /* ---------- save with validation gate ---------- */
   async function save() {
-    saving.value = true
     error.value = ''
+
+    if (!isFormValid.value) {
+      touchAll()
+      error.value = firstError.value || 'يرجى تصحيح بيانات الدفعات'
+      const err = new Error(error.value)
+      err.name = 'ValidationError'
+      throw err
+    }
+
+    saving.value = true
     try {
-      log.debug("useEducationalContentForm save func",form)
+      log.debug('useEducationalContentForm save func', form)
       const saved = await container.saveEducationalContentUseCase.execute(form)
       Object.assign(form, saved instanceof EducationalContent ? saved.toJSON() : saved)
-
+      resetValidation()
       return saved
     } catch (e) {
       error.value = e.message
@@ -72,11 +113,17 @@ export function useEducationalContentForm(type = 'educational-content') {
     saving,
     error,
     handleFormUpload,
-    toggleContentVisibility,   // ✅
+    toggleContentVisibility,
     save,
     reset,
     clearFile,
     addPaymentRow,
     removePaymentRow,
+
+    // ✅ validation API
+    visibleErrors,
+    paymentErrors,
+    isFormValid,
+    touch,
   }
 }
