@@ -26,12 +26,12 @@ export const ROUTE_PATHS = {
   profile: '/profile',
   settings: '/settings',
   agreements: '/agreements',
-  planning:'/home/planning',
+  planning: '/planning',
   contracts: {
-    educationalContent: '/home/contracts/educational-content',
-    lifelongLearning: '/home/contracts/lifelong-learning',
-    memorandum: '/home/contracts/memorandum',
-    nafathCenters: '/home/contracts/nafath-centers',
-    otherAgreements: '/home/contracts/other-agreements',
+    educationalContent: '/contracts/educational-content',
+    lifelongLearning:   '/contracts/lifelong-learning',
+    memorandum:         '/contracts/memorandum',
+    nafathCenters:      '/contracts/nafath-centers',
+    otherAgreements:    '/contracts/other-agreements',
   },
 }

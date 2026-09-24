@@ -57,7 +57,7 @@ const routes = [
 },
 {
   path:ROUTE_PATHS.contracts.lifelongLearning,
-  name: ROUTE_NAMES.contracts.memorandum,
+  name: ROUTE_NAMES.contracts.lifelongLearning,
   component: () => import('@/presentation/views/contracts/LifelongLearningView.vue'),
   meta: { requiresAuth: true },
 },
