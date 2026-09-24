@@ -1,11 +1,9 @@
-// src/data/datasources/EducationalContentDataSource.js
-import { API_URLS } from "@/core/config/apiUrls";
+const STORAGE_KEY = "nafath_agreement";
 import { createLogger } from "@/core/logger";
-const STORAGE_KEY = "app_educational_contents";
-const log = createLogger("EducationalContentDataSource");
-
-export default class EducationalContentDataSource {
-  // ---------------- HTTP helper ----------------
+import { API_URLS } from "@/core/config/apiUrls";
+import { toApiPayload } from "../mappers/NafathCenterMapper";
+const logger = createLogger("NafathCenterRemoteDataSource");
+export default class NafathCenterRemoteDataSource {
   async _request(url, options = {}) {
     const isFormData = options.body instanceof FormData;
 
@@ -35,14 +33,18 @@ export default class EducationalContentDataSource {
   }
 
   // ---------------- SAVE → POST /save ----------------
-  async save(agreement) {
-    const fileObject = agreement.file; // ← the File you just stored
+  async save(form) {
+    logger.debug("NafathCenterRemoteDataSource save", form);
+    const tempPayload = toApiPayload(form);
+    logger.debug(tempPayload);
+
+    const fileObject = tempPayload.file; // ← the File you just stored
     console.log("save fileObject:", fileObject, fileObject instanceof File);
 
     const payload =
-      typeof agreement?.toJSON === "function"
-        ? agreement.toJSON()
-        : { ...agreement };
+      typeof tempPayload?.toJSON === "function"
+        ? tempPayload.toJSON()
+        : { ...tempPayload };
 
     const fd = new FormData();
 
@@ -57,15 +59,15 @@ export default class EducationalContentDataSource {
     }
 
     if (fileObject instanceof File || fileObject instanceof Blob) {
-      fd.append("file", fileObject, fileObject.name);
       fd.append("fileName", fileObject.name);
+      fd.append("file", fileObject, fileObject.name);
     } else {
       console.warn("No File on agreement — upload will skip the file");
     }
 
     const token = localStorage.getItem("access_token");
 
-    const saved = await this._request(API_URLS.educationalContents.create, {
+    const saved = await this._request(API_URLS.nafathCenter.create, {
       method: "POST",
       body: fd,
       headers: {
@@ -75,32 +77,7 @@ export default class EducationalContentDataSource {
     return saved;
   }
 
-  // ---------------- localStorage read side ----------------
-  _readAll() {
-    try {
-      return JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]");
-    } catch {
-      return [];
-    }
-  }
-
-  _writeAll(list) {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(list));
-  }
-
-  async getAll() {
-    return this._readAll();
-  }
-
-  async getByType(type) {
-    log.debug("EducationalContentDataSource getByType" + type);
-
-    return this._readAll().filter((a) => a.type === type);
-  }
-
-  async remove(id) {
-    const list = this._readAll().filter((a) => a.id !== id);
-    this._writeAll(list);
-    return true;
+  async saveNafathCenterPayload(payload) {
+    return payload;
   }
 }

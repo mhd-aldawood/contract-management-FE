@@ -101,8 +101,8 @@
 </template>
 
 <script setup>
-import FormRow from '@/presentation/components/educationalcontent/FormRow.vue'
-import PaymentSection from '@/presentation/components/educationalcontent/PaymentSection.vue'
+import FormRow from '@/presentation/components/FormRow.vue'
+import PaymentSection from '@/presentation/components/PaymentSection.vue'
 import ContractActions from '@/presentation/components/educationalcontent/ContractActions.vue'
 import { useEducationalContentForm } from '@/presentation/composables/useEducationalContentForm'
 import FileChip from '@/presentation/components/educationalcontent/FileChip.vue'

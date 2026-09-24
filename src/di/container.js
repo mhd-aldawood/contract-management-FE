@@ -10,18 +10,26 @@ import { GetAgreementsUseCase } from '@/domain/usecases/agreements/GetAgreements
 import { GetCostDetailsUseCase } from '@/domain/usecases/agreements/GetCostDetailsUseCase';
 import { FilterAgreementsUseCase } from '@/domain/usecases/agreements/FilterAgreementsUseCase';
 import { ExportAgreementsUseCase } from '@/domain/usecases/agreements/ExportAgreementsUseCase';
-
 import EducationalContentDataSource from '@/data/datasources/EducationalContentDataSource';
 import EducationalContentRepositoryImpl from '@/data/repositories/EducationalContentRepositoryImpl';
 import GetEducationalContentUseCase from '@/domain/usecases/educationalcontents/GetEducationalContentUseCase';
 import SaveEducationalContentUseCase from '@/domain/usecases/educationalcontents/SaveEducationalContentUseCase';
+
+import SaveNafathCenterUseCase  from '@/domain/usecases/nafathcenter/SaveNafathCenterUseCase';
+import NafathCenterRemoteDataSource from '@/data/datasources/NafathCenterRemoteDataSource';
+import NafathCenterRepositoryImpl  from '@/data/repositories/NafathCenterRepositoryImpl';
+
+
+
 
 
 // ---------- Data Sources ----------
 const authLocalDataSource = new AuthLocalDataSource();
 const authRemoteDataSource = new AuthRemoteDataSource();
 const agreementLocalDataSource = new AgreementLocalDataSource();
-const educationalContentDataSource=new EducationalContentDataSource()
+const educationalContentDataSource=new EducationalContentDataSource();
+const nafathCenterRemoteDataSource=new NafathCenterRemoteDataSource();
+
 
 // ---------- Repositories ----------
 const authRepository = new AuthRepositoryImpl({
@@ -30,7 +38,10 @@ const authRepository = new AuthRepositoryImpl({
 });
 const agreementRepository = new AgreementRepositoryImpl(agreementLocalDataSource);
 
-const educationalContentRepository =new EducationalContentRepositoryImpl({localDataSource:educationalContentDataSource})
+const educationalContentRepository =new EducationalContentRepositoryImpl({localDataSource:educationalContentDataSource});
+const nafathCenterRepository=new NafathCenterRepositoryImpl({remoteDataSource:nafathCenterRemoteDataSource});
+
+
 
 
 // ---------- Container ----------
@@ -49,7 +60,11 @@ const container = {
 
   //Educatinoal Content
   getEducationalContentUseCase:new GetEducationalContentUseCase({educationalContentRepository}),
-  saveEducationalContentUseCase:new SaveEducationalContentUseCase({educationalContentRepository})
+  saveEducationalContentUseCase:new SaveEducationalContentUseCase({educationalContentRepository}),
+
+  //nafath Center
+  saveNafathCenterUseCase:new SaveNafathCenterUseCase({nafathCenterRepository}),
+
 };
 
 export default container;

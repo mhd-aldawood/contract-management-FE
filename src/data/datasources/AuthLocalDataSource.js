@@ -52,5 +52,6 @@ export default class AuthLocalDataSource {
   clearTokens() {
     localStorage.removeItem(ACCESS_KEY)
     localStorage.removeItem(REFRESH_KEY)
+    localStorage.removeItem(USERS_KEY)
   }
 }
