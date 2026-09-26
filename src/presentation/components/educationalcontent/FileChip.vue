@@ -50,7 +50,7 @@ function onDownload(event) {
 
     <span class="file-name" :title="fileName">{{ fileName }}</span>
 
-    <a
+    <!-- <a
       v-if="downloadable && fileUrl"
       :href="fileUrl"
       target="_blank"
@@ -59,7 +59,7 @@ function onDownload(event) {
       @click="onDownload"
     >
       {{ downloadLabel }}
-    </a>
+    </a> -->
 
     <button
       v-if="removable"

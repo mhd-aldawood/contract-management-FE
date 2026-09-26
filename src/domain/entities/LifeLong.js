@@ -1,12 +1,10 @@
-export class NafathCenter {
+export class LifeLong {
   constructor({
-    id = null,
-    type = 'nafath-center',
+    type = 'life-long',
     agreementNumber = "",
     agreementName = "",
     companyName = "",
     subject = "",
-    estimatedCost = 0,
     startDate = "",
     endDate = "",
     paymentMethod = "", // '' | 'text' | 'table'
@@ -15,16 +13,15 @@ export class NafathCenter {
     status = "",
     disbursement = "",
     budgetType = "current",
-    contractText = "",
-    isHidden=false,
+    fileUrl='',
+    file=null,
+    isHidden=false
   } = {}) {
-    this.id = id;
     this.type=type;
     this.agreementNumber = agreementNumber;
     this.agreementName = agreementName;
     this.companyName = companyName;
     this.subject = subject;
-    this.estimatedCost = estimatedCost;
     this.startDate = startDate;
     this.endDate = endDate;
     this.paymentMethod = paymentMethod;
@@ -33,30 +30,26 @@ export class NafathCenter {
     this.status = status;
     this.disbursement = disbursement;
     this.budgetType = budgetType;
-    this.contractText = contractText;
+    this.file=file;
+    this.fileUrl=fileUrl;
     this.isHidden=isHidden;
   }
 
- static empty(type = 'nafath-center') {
+ static empty(type = 'life-long') {
   return {
-    id: null,
     type,
     agreementNumber: '',
     name: '',
     companyName: '',
     subject: '',
-    additionalCourses: '',
-    estimatedCost: 0,
     startDate: '',
     endDate: '',
     paymentMethod: '',
     paymentText: '',
     paymentSchedule: [],
-    quarterlyDue: 0,
     status: '',
     disbursement: '',
     budgetType: 'current',
-    contractText: '',
     isHidden:false,
     fileName: '',
     fileUrl: '',
@@ -66,7 +59,7 @@ export class NafathCenter {
 
   static fromJSON(json) {
     if (!json) return null;
-    return new NafathCenter(json);
+    return new LifeLong(json);
   }
   toJSON() {
     return { ...this };

@@ -1,8 +1,8 @@
-import { NafathCenterRepository } from '@/domain/repositories/NafathCenterRepository';
+import { LifeLongRepository } from '@/domain/repositories/LifeLongRepository';
 import { createLogger } from '@/core/logger'
-const logger = createLogger('NafathCenterRepositoryImpl')
+const logger = createLogger('LifeLongRepositoryImpl')
 
-export default class NafathCenterRepositoryImpl extends NafathCenterRepository {
+export default class LifeLongRepositoryImpl extends LifeLongRepository {
   constructor({remoteDataSource}) {
     super();
     this.remoteDataSource = remoteDataSource;

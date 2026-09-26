@@ -31,6 +31,9 @@ export const API_URLS = {
   nafathCenter: {
     create: `${API_BASE_URL}/api/nafath-center/create`,
   },
+  lifeLong: {
+    create: `${API_BASE_URL}/api/life-long/create`,
+  },
 
   users: {
     profile: `${API_BASE_URL}/users/profile`,
